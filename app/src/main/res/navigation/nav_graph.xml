@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentGifListScreen">
+
+    <fragment
+        android:id="@+id/fragmentGifListScreen"
+        android:name="com.example.gifify_challenge.ui.fragments.FragmentGifListScreen"
+        android:label="@string/fragment_list_label"
+        tools:layout="@layout/fragment_gif_list_screen">
+        <action
+            android:id="@+id/action_to_favourites"
+            app:destination="@id/fragmentGifFavouritesScreen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentGifFavouritesScreen"
+        android:name="com.example.gifify_challenge.ui.fragments.FragmentGifFavouritesScreen"
+        android:label="@string/fragment_favourites_label"
+        tools:layout="@layout/fragment_gif_favourites_screen">
+
+        <action
+            android:id="@+id/action_to_list"
+            app:destination="@id/fragmentGifListScreen" />
+    </fragment>
+</navigation>
