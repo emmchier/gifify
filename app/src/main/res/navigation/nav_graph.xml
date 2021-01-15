@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentGifListScreen"
-        android:name="com.example.gifify_challenge.ui.fragments.FragmentGifListScreen"
+        android:name="com.example.gifify_challenge.ui.fragments.fragmentGifListScreen.FragmentGifListScreen"
         android:label="@string/fragment_list_label"
         tools:layout="@layout/fragment_gif_list_screen">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/fragmentGifFavouritesScreen"
-        android:name="com.example.gifify_challenge.ui.fragments.FragmentGifFavouritesScreen"
+        android:name="com.example.gifify_challenge.ui.fragments.fragmentGifFavouritesScreen.FragmentGifFavouritesScreen"
         android:label="@string/fragment_favourites_label"
         tools:layout="@layout/fragment_gif_favourites_screen">
 
