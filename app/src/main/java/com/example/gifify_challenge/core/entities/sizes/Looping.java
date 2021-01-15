@@ -1,6 +1,9 @@
 package com.example.gifify_challenge.core.entities.sizes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Looping {
+    @SerializedName("mp4")
     private String mp4;
 
     public Looping(String mp4) {

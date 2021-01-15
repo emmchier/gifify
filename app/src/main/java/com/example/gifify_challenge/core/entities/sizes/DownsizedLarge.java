@@ -1,9 +1,15 @@
 package com.example.gifify_challenge.core.entities.sizes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DownsizedLarge {
+    @SerializedName("url")
     private String url;
+    @SerializedName("width")
     private String width;
+    @SerializedName("height")
     private String height;
+    @SerializedName("size")
     private String size;
 
     public DownsizedLarge(String url, String width, String height, String size) {

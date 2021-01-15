@@ -1,8 +1,13 @@
 package com.example.gifify_challenge.core.entities.sizes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DownsizedStill {
+    @SerializedName("url")
     private String url;
+    @SerializedName("width")
     private String width;
+    @SerializedName("height")
     private String height;
 
     public DownsizedStill(String url, String width, String height) {

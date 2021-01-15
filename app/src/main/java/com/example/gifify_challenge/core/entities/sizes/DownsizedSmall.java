@@ -1,9 +1,15 @@
 package com.example.gifify_challenge.core.entities.sizes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DownsizedSmall {
+    @SerializedName("mp4")
     private String mp4;
+    @SerializedName("width")
     private String width;
+    @SerializedName("height")
     private String height;
+    @SerializedName("mp4_size")
     private String mp4_size;
 
     public DownsizedSmall(String mp4, String width, String height, String mp4_size) {

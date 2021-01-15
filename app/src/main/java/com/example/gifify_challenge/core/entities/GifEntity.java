@@ -1,18 +1,26 @@
 package com.example.gifify_challenge.core.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class GifEntity implements Parcelable {
-
+    @SerializedName("id")
     private String id;
+    @SerializedName("url")
     private String url;
+    @SerializedName("title")
     private String title;
+    @SerializedName("images")
+    private GifImg images;
 
-    public GifEntity(String id, String url, String title) {
+    public GifEntity(String id, String url, String title, GifImg images) {
         this.id = id;
         this.url = url;
         this.title = title;
+        this.images = images;
     }
 
     public String getId() {
@@ -39,7 +47,13 @@ public class GifEntity implements Parcelable {
         this.title = title;
     }
 
+    public GifImg getImages() {
+        return images;
+    }
 
+    public void setImages(GifImg images) {
+        this.images = images;
+    }
 
     @Override
     public int describeContents() {
@@ -51,12 +65,14 @@ public class GifEntity implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.url);
         dest.writeString(this.title);
+        dest.writeParcelable(this.images, flags);
     }
 
     protected GifEntity(Parcel in) {
         this.id = in.readString();
         this.url = in.readString();
         this.title = in.readString();
+        this.images = in.readParcelable(getClass().getClassLoader());
     }
 
     public static final Parcelable.Creator<GifEntity> CREATOR = new Parcelable.Creator<GifEntity>() {
