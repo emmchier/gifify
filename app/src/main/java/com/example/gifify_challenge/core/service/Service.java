@@ -13,4 +13,5 @@ public interface Service {
     Call<DataContainer> getRandomGifList(
             @Query("api_key") String apiKey,
             @Query("limit") int limit);
+
 }
