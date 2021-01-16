@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Primary Color Pallette -->
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <!-- Secondary Color pallette -->
+
+    <color name="primaryTextColor">#37474F</color>
+    <color name="secondaryTextColor">#607D8B</color>
+    <color name="iconTintColor">@color/secondaryTextColor</color>
+    <color name="disableTintColor">#B0BEC5</color>
+    <color name="successColor">#3CCCC3</color>
+    <color name="errorColor">#E04F40</color>
+    <color name="grayDarkBase">#676565</color>
+    <color name="active">#3483FA</color>
+    <color name="separator_color">#ECEFF1</color>
+    <color name="tagLightColor">@color/separator_color</color>
+    <color name="base_stroke_color">@color/disableTintColor</color>
+    <color name="white">#ffffff</color>
+    <color name="white_semi">#f2f2f2</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="semiTransparent">#99000000</color>
+    <color name="opaque">#59000000</color>
+    <color name="opaque_dark">#8A000000</color>
+
 </resources>

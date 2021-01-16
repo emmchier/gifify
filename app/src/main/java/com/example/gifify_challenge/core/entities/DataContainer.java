@@ -1,7 +1,5 @@
 package com.example.gifify_challenge.core.entities;
-
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class DataContainer {

@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Gifify</string>
     <string name="fragment_list_label">Find your Gifs!</string>
     <string name="fragment_favourites_label">Your Favourites here</string>
@@ -7,4 +8,10 @@
     <string name="favoritos">Favoritos</string>
     <string name="volver_a_home">Volver a Home</string>
     <string name="main_activity_label">Find your Gifs!</string>
+    <string name="error_message">No se encontraron datos con la búsqueda. Porfavor vuelva a internarlo</string>
+    <string name="description_image">Imágen del producto</string>
+    <string name="description_like_icon">favourite icon</string>
+    <string name="error_system">Hubo un error. Por favor intente nuevamente</string>
+    <string name="gif_image">gif image</string>
+
 </resources>

@@ -1,3 +1,31 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="primary_text">16sp</dimen>
+    <dimen name="secondary_text">14sp</dimen>
+    <dimen name="small_text">12sp</dimen>
+    <dimen name="mini_text">10sp</dimen>
+    <dimen name="base_space">16sp</dimen>
+    <dimen name="base_space_20">20sp</dimen>
+    <dimen name="base_space_30">30sp</dimen>
+    <dimen name="base_space_40">40sp</dimen>
+    <dimen name="base_space_60">60sp</dimen>
+    <dimen name="base_long_space">25sp</dimen>
+    <dimen name="base_small_space">10sp</dimen>
+    <dimen name="base_mini_space">5sp</dimen>
+    <dimen name="base_corner_radius">5sp</dimen>
+    <dimen name="image_corner_radius">15sp</dimen>
+    <dimen name="base_elevation">4sp</dimen>
+    <dimen name="none">0sp</dimen>
+    <dimen name="min_dimen">1sp</dimen>
+    <dimen name="min_dimen_2">2sp</dimen>
+    <dimen name="base_stroke">1sp</dimen>
+    <dimen name="base_separator">1sp</dimen>
+    <dimen name="base_title">20sp</dimen>
+    <dimen name="base_space_between">5sp</dimen>
+    <dimen name="base_small_icon">20sp</dimen>
+    <dimen name="base_mini_icon">15sp</dimen>
+    <dimen name="base_icon">25sp</dimen>
+    <dimen name="base_title_detail">30sp</dimen>
+    <dimen name="image_header_height">280sp</dimen>
+    <dimen name="translation_y">-55sp</dimen>
 </resources>
