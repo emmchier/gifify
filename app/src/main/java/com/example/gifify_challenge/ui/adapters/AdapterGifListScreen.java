@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -59,10 +61,17 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
         public GifListViewholder(CellGifBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    gifListener.addToFavourite(gifList.get(getAdapterPosition()));
+                    return true;
+                }
+            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    gifListener.shareGif(getAdapterPosition());
+                    gifListener.shareGif(gifList.get(getAdapterPosition()));
                 }
             });
         }
@@ -78,6 +87,7 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
     }
 
     public interface GifListener {
-        void shareGif(Integer position);
+        void addToFavourite(GifEntity gif);
+        void shareGif(GifEntity gif);
     }
 }

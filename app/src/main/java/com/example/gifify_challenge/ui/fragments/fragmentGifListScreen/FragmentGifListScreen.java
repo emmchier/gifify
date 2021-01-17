@@ -20,6 +20,7 @@ import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.databinding.FragmentGifListScreenBinding;
 import com.example.gifify_challenge.ui.adapters.AdapterGifListScreen;
+import com.example.gifify_challenge.ui.fragments.fragmentGifFavouritesScreen.FragmentGifFavouritesScreen;
 import com.example.gifify_challenge.viewmodels.ViewmodelGifListScreen;
 
 import java.util.List;
@@ -40,6 +41,19 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         observeViewmodelData();
 
         return fragmentListView;
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment
+                        .findNavController(FragmentGifListScreen.this)
+                        .navigate(R.id.action_to_favourites);
+            }
+        });
     }
 
     private void observeViewmodelData() {
@@ -90,8 +104,14 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
     }
 
     @Override
-    public void shareGif(Integer position) {
-        Toast.makeText(getContext(), "Compartir en redes", Toast.LENGTH_SHORT).show();
+    public void addToFavourite(GifEntity gif) {
+        viewmodelGifListScreen.insertFavouriteGif(gif);
+        Toast.makeText(getContext(), "AGREGAR", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void shareGif(GifEntity gif) {
+        Toast.makeText(getContext(), "COMPARTIR", Toast.LENGTH_SHORT).show();
     }
 
     @Override

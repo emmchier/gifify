@@ -1,5 +1,4 @@
 package com.example.gifify_challenge.core.entities.sizes;
-
 import com.google.gson.annotations.SerializedName;
 
 public class DownsizedLarge {

@@ -1,9 +1,18 @@
 package com.example.gifify_challenge.core.entities.sizes;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity
 public class Downsized implements Parcelable {
+
+    @NonNull
+    @PrimaryKey
     @SerializedName("url")
     private String url;
     @SerializedName("width")
@@ -13,18 +22,19 @@ public class Downsized implements Parcelable {
     @SerializedName("size")
     private String size;
 
-    public Downsized(String url, String width, String height, String size) {
+    public Downsized(@NonNull String url, String width, String height, String size) {
         this.url = url;
         this.width = width;
         this.height = height;
         this.size = size;
     }
 
+    @NonNull
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(@NonNull String url) {
         this.url = url;
     }
 

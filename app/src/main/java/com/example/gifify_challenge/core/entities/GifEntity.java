@@ -2,11 +2,21 @@ package com.example.gifify_challenge.core.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.example.gifify_challenge.core.utils.ImgConverter;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity
 public class GifEntity implements Parcelable {
+
+    @PrimaryKey
+    @NonNull
     @SerializedName("id")
     private String id;
     @SerializedName("url")
@@ -14,9 +24,10 @@ public class GifEntity implements Parcelable {
     @SerializedName("title")
     private String title;
     @SerializedName("images")
+    @TypeConverters(ImgConverter.class)
     private GifImg images;
 
-    public GifEntity(String id, String url, String title, GifImg images) {
+    public GifEntity(String id, String url, String title, @NonNull GifImg images) {
         this.id = id;
         this.url = url;
         this.title = title;
@@ -47,11 +58,12 @@ public class GifEntity implements Parcelable {
         this.title = title;
     }
 
+    @NonNull
     public GifImg getImages() {
         return images;
     }
 
-    public void setImages(GifImg images) {
+    public void setImages(@NonNull GifImg images) {
         this.images = images;
     }
 
