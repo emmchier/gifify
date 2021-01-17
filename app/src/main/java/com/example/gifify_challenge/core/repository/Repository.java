@@ -32,7 +32,7 @@ public class Repository {
 
     // get data from Giphy API
     public MutableLiveData<DataContainer> getGifList() {
-        
+
         final MutableLiveData<DataContainer> results = new MutableLiveData<>();
 
         RetrofitService.getRetrofitInstance().create(Service.class)
@@ -48,13 +48,36 @@ public class Repository {
                     Log.d("retrofit", response.message());
                 }
             }
-
             @Override
             public void onFailure(Call<DataContainer> call, Throwable t) {
                 Log.d("retrofit", call.request().url().toString());
             }
         });
         return results;
+    }
+
+    public MutableLiveData<DataContainer> searchGifs(String query) {
+
+        final MutableLiveData<DataContainer> searchResults = new MutableLiveData<>();
+
+        RetrofitService.getRetrofitInstance().create(Service.class)
+            .searchGifs(Const.GIPHY_API_KEY, query)
+            .enqueue(new Callback<DataContainer>() {
+                @Override
+                public void onResponse(Call<DataContainer> call, Response<DataContainer> response) {
+                    if (response.isSuccessful()) {
+                        searchResults.postValue(response.body());
+                    } else {
+                        searchResults.postValue(null);
+                        Log.d("retrofit", response.message());
+                    }
+                }
+                @Override
+                public void onFailure(Call<DataContainer> call, Throwable t) {
+                    Log.d("retrofit", call.request().url().toString());
+                }
+            });
+            return searchResults;
     }
 
     public List<GifEntity> getGifFavouriteList() {

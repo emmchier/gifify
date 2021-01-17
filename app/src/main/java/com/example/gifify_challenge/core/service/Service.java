@@ -14,4 +14,8 @@ public interface Service {
             @Query("api_key") String apiKey,
             @Query("limit") int limit);
 
+    @GET("search")
+    Call<DataContainer> searchGifs(
+            @Query("api_key") String apiKey,
+            @Query("q") String query);
 }

@@ -14,6 +14,7 @@ import java.util.List;
 public class ViewmodelGifListScreen extends AndroidViewModel {
 
     private MutableLiveData<DataContainer> gifEntityList;
+    private MutableLiveData<DataContainer> searchResultsList;
     private MutableLiveData<Boolean> errorService;
     private MutableLiveData<Integer> progressBar;
 
@@ -22,6 +23,7 @@ public class ViewmodelGifListScreen extends AndroidViewModel {
     public ViewmodelGifListScreen(Application application) {
         super(application);
         gifEntityList = new MutableLiveData<>();
+        searchResultsList = new MutableLiveData<>();
         errorService = new MutableLiveData<>();
         progressBar = new MutableLiveData<>();
         repository = new Repository(application);
@@ -33,12 +35,21 @@ public class ViewmodelGifListScreen extends AndroidViewModel {
         gifEntityList = repository.getGifList();
     }
 
+    public void getSearchGifs(String query) {
+        progressBar.setValue(View.VISIBLE);
+        searchResultsList = repository.searchGifs(query);
+    }
+
     public void insertFavouriteGif(GifEntity favouriteGif) {
         repository.insertFavouriteGif(favouriteGif);
     }
 
     public LiveData<DataContainer> gifList() {
         return gifEntityList;
+    }
+
+    public LiveData<DataContainer> searchList() {
+        return searchResultsList;
     }
 
     public LiveData<Integer> progressBarShowing() {

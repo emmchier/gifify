@@ -73,4 +73,7 @@ dependencies {
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
 
+    //Pagination
+    implementation 'android.arch.paging:runtime:2.1.0'
+
 }

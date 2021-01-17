@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -58,6 +59,7 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
 
     private void observeViewmodelData() {
         viewmodelGifListScreen = ViewModelProviders.of(requireActivity()).get(ViewmodelGifListScreen.class);
+        viewmodelGifListScreen.getSearchGifs("cat");
 
         // observe data from viewmodel
         final Observer<DataContainer> dataContainerObserver = new Observer<DataContainer>() {
@@ -89,6 +91,17 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
             }
         };
         viewmodelGifListScreen.isErrorService().observe(requireActivity(), observerErrorFromService);
+
+        // observe search results from viewmodel
+        final Observer<DataContainer> dataSearchObserver = new Observer<DataContainer>() {
+            @Override
+            public void onChanged(DataContainer dataContainer) {
+                if (dataContainer != null) {
+                    adapterGifListScreen.loadGifs(dataContainer.getData());
+                }
+            }
+        };
+        viewmodelGifListScreen.searchList().observe(requireActivity(), dataSearchObserver);
     }
 
     private void initRecyclerViewGifList() {
@@ -123,5 +136,22 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
                 binding.swipeReflesh.setRefreshing(false);
             }
         }, 2000);
+    }
+
+    private void setUpSearchView(String query) {
+
+        viewmodelGifListScreen.getSearchGifs(query);
+
+        binding.searchViewGifs.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 }

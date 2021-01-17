@@ -41,6 +41,7 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
         GifEntity gif = gifList.get(position);
         GifListViewholder gifListViewholder = (GifListViewholder) holder;
         gifListViewholder.setCellData(gif);
+
     }
 
     @Override
