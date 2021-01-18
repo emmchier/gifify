@@ -4,30 +4,23 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.gifify_challenge.R;
-import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.databinding.CellGifBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterGifListScreen extends RecyclerView.Adapter {
+public class AdapterSearchGifScreen extends RecyclerView.Adapter {
 
-    private List<GifEntity> gifList;
     private List<GifEntity> searchList;
-    private GifListener gifListener;
+    private SearchListener searchListener;
 
-    public AdapterGifListScreen(GifListener gifListener) {
-        this.gifList = new ArrayList<>();
+    public AdapterSearchGifScreen(SearchListener searchListener) {
         this.searchList = new ArrayList<>();
-        this.gifListener = gifListener;
-        searchList.addAll(gifList);
+        this.searchListener = searchListener;
     }
 
     @NonNull
@@ -35,49 +28,55 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        CellGifBinding gifCell = CellGifBinding.bind(inflater.inflate(R.layout.cell_gif, parent, false));
-        GifListViewholder viewholder = new GifListViewholder(gifCell);
+        CellGifBinding searchCell = CellGifBinding.bind(inflater.inflate(R.layout.cell_gif, parent, false));
+        SearchViewholder searchViewholder = new SearchViewholder(searchCell);
 
-        return viewholder;
+        return searchViewholder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        GifEntity gif = gifList.get(position);
-        GifListViewholder gifListViewholder = (GifListViewholder) holder;
-        gifListViewholder.setCellData(gif);
+        GifEntity gif = searchList.get(position);
+        SearchViewholder searchViewholder = (SearchViewholder) holder;
+        searchViewholder.setCellData(gif);
     }
 
     @Override
     public int getItemCount() {
-        return gifList.size();
+        return searchList.size();
     }
 
-    public void loadGifs(List<GifEntity> gifs) {
-        if (gifs != null) {
-            this.gifList.addAll(gifs);
+    public void loadSearchGifs(List<GifEntity> searchGifs) {
+        if (searchGifs != null) {
+            this.searchList.clear();
+            this.searchList.addAll(searchGifs);
             notifyDataSetChanged();
         }
     }
 
-    public class GifListViewholder extends RecyclerView.ViewHolder {
+    public void clearList() {
+        this.searchList.clear();
+        notifyDataSetChanged();
+    }
+
+    public class SearchViewholder extends RecyclerView.ViewHolder {
 
         private CellGifBinding binding;
 
-        public GifListViewholder(CellGifBinding binding) {
+        public SearchViewholder(CellGifBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    gifListener.addToFavourite(gifList.get(getAdapterPosition()));
+                    searchListener.addToFavourite(searchList.get(getAdapterPosition()));
                     return true;
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    gifListener.shareGif(gifList.get(getAdapterPosition()));
+                    searchListener.shareGif(searchList.get(getAdapterPosition()));
                 }
             });
         }
@@ -92,7 +91,7 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
         }
     }
 
-    public interface GifListener {
+    public interface SearchListener {
         void addToFavourite(GifEntity gif);
         void shareGif(GifEntity gif);
     }

@@ -12,7 +12,8 @@ public interface Service {
     @GET("trending")
     Call<DataContainer> getRandomGifList(
             @Query("api_key") String apiKey,
-            @Query("limit") int limit);
+            @Query("limit") int limit,
+            @Query("offset") int offset);
 
     @GET("search")
     Call<DataContainer> searchGifs(

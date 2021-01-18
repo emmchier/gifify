@@ -9,40 +9,44 @@ import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.core.repository.Repository;
 import java.util.List;
 
-public class ViewmodelGifListScreen extends AndroidViewModel {
+public class ViewmodelSearchGifScreen extends AndroidViewModel {
 
-    private MutableLiveData<DataContainer> gifEntityList;
+    private MutableLiveData<DataContainer> searchGifList;
     private MutableLiveData<Boolean> errorService;
     private MutableLiveData<Integer> progressBar;
-
-    private int initialPage = 0;
+    private MutableLiveData<Integer> searchDefaultImg;
 
     private Repository repository;
 
-    public ViewmodelGifListScreen(Application application) {
+    public ViewmodelSearchGifScreen(Application application) {
         super(application);
-        gifEntityList = new MutableLiveData<>();
+        searchGifList = new MutableLiveData<>();
         errorService = new MutableLiveData<>();
         progressBar = new MutableLiveData<>();
+        searchDefaultImg = new MutableLiveData<>();
         repository = new Repository(application);
-        getGiftList();
+        getSearchGifs("");
     }
 
-    private void getGiftList() {
-        progressBar.setValue(View.VISIBLE);
-        gifEntityList = repository.getGifList(initialPage);
+    public void getSearchGifs(String query) {
+        searchDefaultImg.setValue(View.VISIBLE);
+        searchGifList.postValue(repository.searchGifs(query).getValue());
     }
 
     public void insertFavouriteGif(GifEntity favouriteGif) {
         repository.insertFavouriteGif(favouriteGif);
     }
 
-    public LiveData<DataContainer> gifList() {
-        return gifEntityList;
+    public LiveData<DataContainer> searchList() {
+        return searchGifList;
     }
 
     public LiveData<Integer> progressBarShowing() {
         return progressBar;
+    }
+
+    public LiveData<Integer> searchDefaultImgShowing() {
+        return searchDefaultImg;
     }
 
     public LiveData<Boolean> isErrorService() {
@@ -57,10 +61,5 @@ public class ViewmodelGifListScreen extends AndroidViewModel {
     public void responseErrorService() {
         this.errorService.setValue(true);
         this.progressBar.postValue(View.GONE);
-    }
-
-    public void getNextPage() {
-        initialPage++;
-        getGiftList();
     }
 }

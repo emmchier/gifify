@@ -25,18 +25,23 @@ public class Repository {
     private Application application;
     private MutableLiveData<List<GifEntity>> favourites;
 
+    private final MutableLiveData<DataContainer> results;
+    private final MutableLiveData<DataContainer> searchResults;
+
     public Repository(Application application) {
         this.application = application;
         this.favourites = new MutableLiveData<>();
+        this.results = new MutableLiveData<>();
+        this.searchResults = new MutableLiveData<>();
     }
 
     // get data from Giphy API
-    public MutableLiveData<DataContainer> getGifList() {
+    public MutableLiveData<DataContainer> getGifList(int paginationNumber) {
 
-        final MutableLiveData<DataContainer> results = new MutableLiveData<>();
+        results.postValue(new DataContainer(new ArrayList<>()));
 
         RetrofitService.getRetrofitInstance().create(Service.class)
-                .getRandomGifList(Const.GIPHY_API_KEY, 20)
+                .getRandomGifList(Const.GIPHY_API_KEY, 4, paginationNumber)
                 .enqueue(new Callback<DataContainer>() {
             @Override
             public void onResponse(Call<DataContainer> call, Response<DataContainer> response) {
@@ -58,7 +63,7 @@ public class Repository {
 
     public MutableLiveData<DataContainer> searchGifs(String query) {
 
-        final MutableLiveData<DataContainer> searchResults = new MutableLiveData<>();
+        searchResults.postValue(new DataContainer(new ArrayList<>()));
 
         RetrofitService.getRetrofitInstance().create(Service.class)
             .searchGifs(Const.GIPHY_API_KEY, query)
@@ -82,7 +87,6 @@ public class Repository {
 
     public List<GifEntity> getGifFavouriteList() {
         room = new RoomDataSource(application.getApplicationContext());
-        //favourites.setValue(room.getAllFavouriteGifList());
         return room.getAllFavouriteGifList();
     }
 
@@ -95,5 +99,4 @@ public class Repository {
         room = new RoomDataSource(application.getApplicationContext());
         room.deleteFavouriteGif(gifId);
     }
-
 }

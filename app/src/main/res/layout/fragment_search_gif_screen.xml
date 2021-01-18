@@ -6,17 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/tagLightColor"
-    android:layout_weight="90"
-    tools:context=".ui.fragments.fragmentGifListScreen.FragmentGifListScreen">
+    tools:context=".ui.fragments.fragmentSearchGifsScreen.FragmentSearchGifScreen">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <ImageView
+        android:id="@+id/imageViewSearchDefault"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_baseline_search_24"
+        app:tint="@color/disableTintColor" />
+
+  <!--  <ProgressBar
+        android:id="@+id/searchProgressBar"
         android:layout_width="@dimen/base_space_60"
         android:layout_height="@dimen/base_space_60"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,43 +33,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearToSearch"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/tagLightColor">
+            android:layout_height="?android:attr/actionBarSize">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchViewGifs"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:focusedByDefault="false"
+                app:iconifiedByDefault="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:queryHint="Search your gifs here..."
+                tools:ignore="UnusedAttribute" />
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_baseline_search_24"
+                android:id="@+id/imargeViewBackFromSearch"
+                android:layout_width="@dimen/base_space_40"
+                android:layout_height="match_parent"
+                android:background="@color/tagLightColor"
+                android:src="@drawable/ic_baseline_arrow_back_24"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toEndOf="@+id/searchViewGifs"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Search your gifs here..."
-                android:textColor="#929495"
-                android:textSize="18dp"
-                android:layout_marginStart="11dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0"/>
+                app:layout_constraintHorizontal_bias="0"
+                android:padding="5dp"
+                android:contentDescription="back button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewGifList"
+            android:id="@+id/recyclerViewSearchList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,17 +78,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/button_second"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/favoritos"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        app:layout_constraintVertical_bias="1"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

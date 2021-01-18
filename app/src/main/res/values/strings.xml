@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">Gifify</string>
-    <string name="fragment_list_label">Find your Gifs!</string>
+    <string name="fragment_search_label">Find your Gifs!</string>
     <string name="fragment_favourites_label">Your Favourites here</string>
     <string name="fragment_home_list">Fragment Home List</string>
     <string name="ir_a_favoritos">Ir a Favoritos</string>

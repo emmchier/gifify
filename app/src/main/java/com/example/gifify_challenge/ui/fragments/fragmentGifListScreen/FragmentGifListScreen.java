@@ -26,8 +26,7 @@ import com.example.gifify_challenge.viewmodels.ViewmodelGifListScreen;
 
 import java.util.List;
 
-public class FragmentGifListScreen extends Fragment implements AdapterGifListScreen.GifListener,
-        SwipeRefreshLayout.OnRefreshListener {
+public class FragmentGifListScreen extends Fragment implements AdapterGifListScreen.GifListener {
 
     private AdapterGifListScreen adapterGifListScreen;
     private ViewmodelGifListScreen viewmodelGifListScreen;
@@ -40,6 +39,7 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         initViews();
         initRecyclerViewGifList();
         observeViewmodelData();
+        setPagination();
 
         return fragmentListView;
     }
@@ -59,7 +59,6 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
 
     private void observeViewmodelData() {
         viewmodelGifListScreen = ViewModelProviders.of(requireActivity()).get(ViewmodelGifListScreen.class);
-        viewmodelGifListScreen.getSearchGifs("cat");
 
         // observe data from viewmodel
         final Observer<DataContainer> dataContainerObserver = new Observer<DataContainer>() {
@@ -92,16 +91,6 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         };
         viewmodelGifListScreen.isErrorService().observe(requireActivity(), observerErrorFromService);
 
-        // observe search results from viewmodel
-        final Observer<DataContainer> dataSearchObserver = new Observer<DataContainer>() {
-            @Override
-            public void onChanged(DataContainer dataContainer) {
-                if (dataContainer != null) {
-                    adapterGifListScreen.loadGifs(dataContainer.getData());
-                }
-            }
-        };
-        viewmodelGifListScreen.searchList().observe(requireActivity(), dataSearchObserver);
     }
 
     private void initRecyclerViewGifList() {
@@ -113,7 +102,17 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
 
     private void initViews() {
         binding.progressBar.setVisibility(View.VISIBLE);
-        binding.swipeReflesh.setOnRefreshListener(this);
+        binding.linearToSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isClearList", true);
+                NavHostFragment
+                        .findNavController(FragmentGifListScreen.this)
+                        .navigate(R.id.action_to_search, bundle);
+                Toast.makeText(getContext(), "fragment search", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -127,30 +126,14 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         Toast.makeText(getContext(), "COMPARTIR", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onRefresh() {
-        viewmodelGifListScreen.gifList();
-        new Handler().postDelayed(new Runnable() {
+    private void setPagination() {
+        binding.recyclerViewGifList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void run() {
-                binding.swipeReflesh.setRefreshing(false);
-            }
-        }, 2000);
-    }
-
-    private void setUpSearchView(String query) {
-
-        viewmodelGifListScreen.getSearchGifs(query);
-
-        binding.searchViewGifs.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!binding.recyclerViewGifList.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                    viewmodelGifListScreen.getNextPage();
+                }
             }
         });
     }

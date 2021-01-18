@@ -15,6 +15,10 @@ public class DataContainer {
     public DataContainer() {
     }
 
+    public DataContainer(List<GifEntity> data) {
+        this.data = data;
+    }
+
     public List<GifEntity> getData() {
         return data;
     }
