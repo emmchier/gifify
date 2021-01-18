@@ -7,10 +7,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.example.gifify_challenge.core.utils.ImgConverter;
+import com.example.gifify_challenge.utils.ImgConverter;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 @Entity
 public class GifEntity implements Parcelable {

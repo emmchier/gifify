@@ -1,6 +1,7 @@
 package com.example.gifify_challenge.ui.fragments.fragmentGifListScreen;
 import android.os.Bundle;
 import android.os.Handler;
+import android.service.autofill.OnClickAction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,8 +24,14 @@ import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.databinding.FragmentGifListScreenBinding;
 import com.example.gifify_challenge.ui.adapters.AdapterGifListScreen;
+import com.example.gifify_challenge.ui.dialogs.DialogBase;
 import com.example.gifify_challenge.ui.fragments.fragmentGifFavouritesScreen.FragmentGifFavouritesScreen;
+import com.example.gifify_challenge.ui.fragments.fragmentSearchGifsScreen.FragmentSearchGifScreen;
+import com.example.gifify_challenge.utils.SpacingItemDecoration;
+import com.example.gifify_challenge.utils.Tools;
+import com.example.gifify_challenge.utils.Util;
 import com.example.gifify_challenge.viewmodels.ViewmodelGifListScreen;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -31,6 +40,8 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
     private AdapterGifListScreen adapterGifListScreen;
     private ViewmodelGifListScreen viewmodelGifListScreen;
     private FragmentGifListScreenBinding binding;
+
+    private FragmentManager fm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,8 +107,9 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
     private void initRecyclerViewGifList() {
         adapterGifListScreen = new AdapterGifListScreen(this);
         binding.recyclerViewGifList.setAdapter(adapterGifListScreen);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        binding.recyclerViewGifList.setLayoutManager(layoutManager);
+        binding.recyclerViewGifList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.recyclerViewGifList.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(getContext(), 3), true));
+        binding.recyclerViewGifList.setHasFixedSize(true);
     }
 
     private void initViews() {
@@ -105,20 +117,49 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         binding.linearToSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("isClearList", true);
                 NavHostFragment
                         .findNavController(FragmentGifListScreen.this)
-                        .navigate(R.id.action_to_search, bundle);
-                Toast.makeText(getContext(), "fragment search", Toast.LENGTH_SHORT).show();
+                        .navigate(R.id.action_to_search);
             }
         });
     }
 
     @Override
     public void addToFavourite(GifEntity gif) {
-        viewmodelGifListScreen.insertFavouriteGif(gif);
-        Toast.makeText(getContext(), "AGREGAR", Toast.LENGTH_SHORT).show();
+        DialogBase dialogBase = new DialogBase(
+            gif,
+            "Add to favourite?",
+            "ADD",
+            "See More",
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewmodelGifListScreen.insertFavouriteGif(gif);
+                    Util.setActionSnackBar(
+                        getView(),
+                        "Added to favourites",
+                        "MORE",
+                        Snackbar.LENGTH_LONG,
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                NavHostFragment
+                                        .findNavController(FragmentGifListScreen.this)
+                                        .navigate(R.id.action_to_favourites);
+                            }
+                        });
+            }
+            },
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NavHostFragment
+                            .findNavController(FragmentGifListScreen.this)
+                            .navigate(R.id.action_to_favourites);
+                }
+            }
+        );
+        dialogBase.show(getChildFragmentManager(), "Dialog add to favourites");
     }
 
     @Override

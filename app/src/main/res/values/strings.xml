@@ -13,5 +13,6 @@
     <string name="description_like_icon">favourite icon</string>
     <string name="error_system">Hubo un error. Por favor intente nuevamente</string>
     <string name="gif_image">gif image</string>
+    <string name="gif_name">Gif Name</string>
 
 </resources>

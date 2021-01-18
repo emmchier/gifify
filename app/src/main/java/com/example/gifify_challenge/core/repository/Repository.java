@@ -1,6 +1,5 @@
 package com.example.gifify_challenge.core.repository;
 import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -9,7 +8,7 @@ import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.core.service.RetrofitService;
 import com.example.gifify_challenge.core.service.Service;
-import com.example.gifify_challenge.core.utils.Const;
+import com.example.gifify_challenge.utils.Const;
 import com.example.gifify_challenge.room.RoomDataSource;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class Repository {
         results.postValue(new DataContainer(new ArrayList<>()));
 
         RetrofitService.getRetrofitInstance().create(Service.class)
-                .getRandomGifList(Const.GIPHY_API_KEY, 4, paginationNumber)
+                .getRandomGifList(Const.GIPHY_API_KEY, 25, paginationNumber)
                 .enqueue(new Callback<DataContainer>() {
             @Override
             public void onResponse(Call<DataContainer> call, Response<DataContainer> response) {

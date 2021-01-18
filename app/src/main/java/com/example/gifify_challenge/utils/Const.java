@@ -1,4 +1,4 @@
-package com.example.gifify_challenge.core.utils;
+package com.example.gifify_challenge.utils;
 
 public class Const {
     // api key provided by Wollox

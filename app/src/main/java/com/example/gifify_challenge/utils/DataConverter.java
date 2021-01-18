@@ -1,8 +1,7 @@
-package com.example.gifify_challenge.core.utils;
+package com.example.gifify_challenge.utils;
 import androidx.room.TypeConverter;
 
 import com.example.gifify_challenge.core.entities.GifEntity;
-import com.example.gifify_challenge.core.entities.GifImg;
 import com.google.gson.Gson;
 
 public class DataConverter {

@@ -1,5 +1,5 @@
 package com.example.gifify_challenge.core.service;
-import com.example.gifify_challenge.core.utils.Const;
+import com.example.gifify_challenge.utils.Const;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
