@@ -1,14 +1,28 @@
 package com.example.gifify_challenge.ui.fragments.fragmentGifListScreen;
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.service.autofill.OnClickAction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -19,10 +33,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.databinding.FragmentGifListScreenBinding;
+import com.example.gifify_challenge.ui.activities.MainActivity;
 import com.example.gifify_challenge.ui.adapters.AdapterGifListScreen;
 import com.example.gifify_challenge.ui.dialogs.DialogBase;
 import com.example.gifify_challenge.ui.fragments.fragmentGifFavouritesScreen.FragmentGifFavouritesScreen;
@@ -33,15 +52,19 @@ import com.example.gifify_challenge.utils.Util;
 import com.example.gifify_challenge.viewmodels.ViewmodelGifListScreen;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 public class FragmentGifListScreen extends Fragment implements AdapterGifListScreen.GifListener {
 
     private AdapterGifListScreen adapterGifListScreen;
     private ViewmodelGifListScreen viewmodelGifListScreen;
     private FragmentGifListScreenBinding binding;
-
-    private FragmentManager fm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -128,8 +151,8 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
     public void addToFavourite(GifEntity gif) {
         DialogBase dialogBase = new DialogBase(
             gif,
-            "Add to favourite?",
-            "ADD",
+            "",
+            "ADD TO FAVOURITES",
             "See More",
             new View.OnClickListener() {
                 @Override
@@ -144,18 +167,18 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
                             @Override
                             public void onClick(View view) {
                                 NavHostFragment
-                                        .findNavController(FragmentGifListScreen.this)
-                                        .navigate(R.id.action_to_favourites);
+                                    .findNavController(FragmentGifListScreen.this)
+                                    .navigate(R.id.action_to_favourites);
                             }
                         });
-            }
+                }
             },
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     NavHostFragment
-                            .findNavController(FragmentGifListScreen.this)
-                            .navigate(R.id.action_to_favourites);
+                        .findNavController(FragmentGifListScreen.this)
+                        .navigate(R.id.action_to_favourites);
                 }
             }
         );
@@ -164,7 +187,44 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
 
     @Override
     public void shareGif(GifEntity gif) {
-        Toast.makeText(getContext(), "COMPARTIR", Toast.LENGTH_SHORT).show();
+        DialogBase dialogBase = new DialogBase(
+            gif,
+            "",
+            "SHARE WITH FRIENDS!",
+            "See More",
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Glide.with(getContext())
+                        .asBitmap()
+                        .load(gif.getImages().getDownsized().getUrl())
+                        .into(new CustomTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                Uri uri = getImageUri(resource);
+                                Intent shareIntent = new Intent();
+                                shareIntent.setAction(Intent.ACTION_SEND);
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                                shareIntent.setType("image/gif");
+                                startActivity(Intent.createChooser(shareIntent, "Share this GIF"));
+                            }
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                            }
+                        });
+                }
+            },
+            null
+        );
+        dialogBase.show(getChildFragmentManager(), "Share with friends");
+    }
+
+    public Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
+                inImage, UUID.randomUUID().toString() + ".png", "drawing");
+        return Uri.parse(path);
     }
 
     private void setPagination() {

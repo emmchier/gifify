@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,9 +24,14 @@ import com.example.gifify_challenge.databinding.FragmentGifFavouritesScreenBindi
 import com.example.gifify_challenge.databinding.FragmentGifListScreenBinding;
 import com.example.gifify_challenge.ui.adapters.AdapterGifFavouritesScreen;
 import com.example.gifify_challenge.ui.adapters.AdapterGifListScreen;
+import com.example.gifify_challenge.ui.dialogs.DialogBase;
 import com.example.gifify_challenge.ui.fragments.fragmentGifListScreen.FragmentGifListScreen;
+import com.example.gifify_challenge.utils.SpacingItemDecoration;
+import com.example.gifify_challenge.utils.Tools;
+import com.example.gifify_challenge.utils.Util;
 import com.example.gifify_challenge.viewmodels.ViewmodelGifFavouritesScreen;
 import com.example.gifify_challenge.viewmodels.ViewmodelGifListScreen;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,18 +83,38 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
     private void initRecyclerViewFavouriteList() {
         adapterGifFavouritesScreen = new AdapterGifFavouritesScreen(this);
         binding.recyclerViewGifFavourite.setAdapter(adapterGifFavouritesScreen);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        binding.recyclerViewGifFavourite.setLayoutManager(layoutManager);
+        binding.recyclerViewGifFavourite.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.recyclerViewGifFavourite.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(getContext(), 3), true));
+        binding.recyclerViewGifFavourite.setHasFixedSize(true);
+    }
+
+    @Override
+    public void deleteFromList(GifEntity gif, int position) {
+        DialogBase dialogBase = new DialogBase(
+            gif,
+            "Delete from favourites?",
+            "DELETE",
+            "",
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewmodelGifFavouritesScreen.deleteFavouriteGif(gif.getId());
+                    adapterGifFavouritesScreen.removeFromList(position);
+                    Util.setActionSnackBar(
+                            getView(),
+                            "Removed from your favourites",
+                            "",
+                            Snackbar.LENGTH_LONG,
+                            null);
+                }
+            },
+            null
+        );
+        dialogBase.show(getChildFragmentManager(), "Dialog add delete favourite");
     }
 
     @Override
     public void shareGif(GifEntity gif) {
         Toast.makeText(getContext(), "COMPARTIR", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void deleteFromList(GifEntity gif) {
-        viewmodelGifFavouritesScreen.deleteFavouriteGif(gif.getId());
-        Toast.makeText(getContext(), "ELIMINADO", Toast.LENGTH_SHORT).show();
     }
 }

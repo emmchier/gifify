@@ -54,6 +54,11 @@ public class AdapterGifFavouritesScreen extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void removeFromList(int position) {
+        favouriteList.remove(position);
+        notifyDataSetChanged();
+    }
+
     public class FavouriteListViewholder extends RecyclerView.ViewHolder {
 
         private CellGifBinding binding;
@@ -70,13 +75,13 @@ public class AdapterGifFavouritesScreen extends RecyclerView.Adapter {
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    favouriteListener.deleteFromList(favouriteList.get(getAdapterPosition()));
-                    favouriteList.remove(getAdapterPosition());
-                    notifyDataSetChanged();
+                    favouriteListener.deleteFromList(favouriteList.get(getAdapterPosition()), getAdapterPosition());
                     return true;
                 }
             });
         }
+
+
 
         @SuppressLint("CheckResult")
         public void setFavouriteCellData(GifEntity gif) {
@@ -90,6 +95,6 @@ public class AdapterGifFavouritesScreen extends RecyclerView.Adapter {
 
     public interface FavouriteListener {
         void shareGif(GifEntity gif);
-        void deleteFromList(GifEntity gif);
+        void deleteFromList(GifEntity gif, int position);
     }
 }

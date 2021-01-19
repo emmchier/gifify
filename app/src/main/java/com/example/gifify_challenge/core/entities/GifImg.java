@@ -3,16 +3,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.example.gifify_challenge.core.entities.sizes.Downsized;
-import com.example.gifify_challenge.core.entities.sizes.DownsizedLarge;
-import com.example.gifify_challenge.core.entities.sizes.DownsizedMedium;
-import com.example.gifify_challenge.core.entities.sizes.DownsizedSmall;
-import com.example.gifify_challenge.core.entities.sizes.DownsizedStill;
-import com.example.gifify_challenge.core.entities.sizes.Looping;
-import com.example.gifify_challenge.core.entities.sizes.PreviewGif;
 import com.google.gson.annotations.SerializedName;
 
 public class GifImg implements Parcelable {
