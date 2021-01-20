@@ -4,9 +4,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +15,12 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.example.gifify_challenge.R;
-
 import static com.example.gifify_challenge.utils.Const.REQUEST_STORAGE_PERMISSION;
 
+/*
+ * Launcher activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
@@ -34,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         setNavigation();
 
+        // check permissions for share gifs
         if (checkStoragePermission()) {
         } else {
             requestStoragePermission();
         }
     }
 
+    // navigation
     private void setNavigation() {
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.fragmentGifListScreen,
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        // edit Action Bar
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller,
@@ -101,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setTitle(R.string.main_activity_label);
     }
 
+    // permissions for share
     private boolean checkStoragePermission() {
         return ActivityCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_STORAGE_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             } else {
-                Toast.makeText(this, "To share Gifs, you have to accept permissions.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.permission_description, Toast.LENGTH_SHORT).show();
             }
         }
     }

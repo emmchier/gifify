@@ -21,7 +21,6 @@
     <color name="active">#3483FA</color>
     <color name="separator_color">#ECEFF1</color>
     <color name="tagDarkColor">#15202B</color>
-   <!-- <color name="tagLightColor">@color/separator_color</color>-->
     <color name="base_stroke_color">@color/disableTintColor</color>
     <color name="white">#ffffff</color>
     <color name="white_semi">#f2f2f2</color>
@@ -30,5 +29,6 @@
     <color name="semiTransparent">#99000000</color>
     <color name="opaque">#59000000</color>
     <color name="overlay">#8A000000</color>
+    <color name="search_text_color">#929495</color>
 
 </resources>

@@ -13,6 +13,9 @@ import com.example.gifify_challenge.databinding.CellGifBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Adapter for search list
+ */
 public class AdapterSearchGifScreen extends RecyclerView.Adapter {
 
     private List<GifEntity> searchList;
@@ -54,11 +57,6 @@ public class AdapterSearchGifScreen extends RecyclerView.Adapter {
         }
     }
 
-    public void clearList() {
-        this.searchList.clear();
-        notifyDataSetChanged();
-    }
-
     public class SearchViewholder extends RecyclerView.ViewHolder {
 
         private CellGifBinding binding;
@@ -86,7 +84,7 @@ public class AdapterSearchGifScreen extends RecyclerView.Adapter {
             Glide.with(itemView)
                     .load(gif.getImages().getDownsized().getUrl())
                     .placeholder(R.drawable.ic_gif)
-                    .error(R.drawable.ic_baseline_videocam_24)
+                    .error(R.drawable.ic_empty)
                     .into(binding.imageViewGif);
         }
     }

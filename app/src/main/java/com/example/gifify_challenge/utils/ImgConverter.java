@@ -3,6 +3,9 @@ import androidx.room.TypeConverter;
 import com.example.gifify_challenge.core.entities.GifImg;
 import com.google.gson.Gson;
 
+/*
+ * Convert img format for room
+ */
 public class ImgConverter {
 
     private static Gson gson;

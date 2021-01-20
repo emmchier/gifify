@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.ui.dialogs.DialogBase;
 import com.google.android.material.snackbar.Snackbar;
@@ -28,24 +29,30 @@ import java.util.UUID;
 
 import static java.security.AccessController.getContext;
 
+/*
+ * Util class for shared methods
+ */
 public class Util {
 
+    // set SnackBars
     public static void setActionSnackBar(View view, String message, String btnTitle, int duration, View.OnClickListener action) {
         Snackbar snackbar = Snackbar.make(view, message, duration)
                 .setAction(btnTitle, action);
         snackbar.show();
     }
 
+    // hide keyboard
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    // share method
     public static void shareGif(GifEntity gif, Context context, FragmentManager fm) {
         DialogBase dialogBase = new DialogBase(
                 gif,
                 "",
-                "SHARE WITH FRIENDS!",
+                context.getString(R.string.share_title),
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -72,14 +79,16 @@ public class Util {
         dialogBase.show(fm, "Share with friends");
     }
 
+    // transform to bitmap
     private static Uri getImageUri(Bitmap inImage, Context context) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        inImage.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(),
                 inImage, UUID.randomUUID().toString() + ".png", "drawing");
         return Uri.parse(path);
     }
 
+    // margins for recyclers
     public static int dpToPx(Context c, int dp) {
         Resources r = c.getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));

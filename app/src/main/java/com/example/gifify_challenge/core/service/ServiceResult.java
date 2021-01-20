@@ -1,5 +1,8 @@
 package com.example.gifify_challenge.core.service;
 
+/*
+ * Service Result Pattern
+ */
 public class ServiceResult<T> {
 
     private Status status;

@@ -21,5 +21,18 @@
     <string name="search">Search...</string>
     <string name="fav">fav</string>
     <string name="delete_from_favourites">Delete from favourites?</string>
+    <string name="unexpected_error">An unexpected error occurred</string>
+    <string name="permission_description">To share Gifs, you have to accept permissions.</string>
+    <string name="delete_favourites">Delete from favourites?</string>
+    <string name="delete_upper">DELETE</string>
+    <string name="remove_from_favourites">Removed from your favourites</string>
+    <string name="dialog_favourites">Dialog favourites</string>
+    <string name="add_favourites">ADD TO FAVOURITES</string>
+    <string name="added_favourites">Added to favourites</string>
+    <string name="more_upper">MORE</string>
+    <string name="share_title">SHARE WITH FRIENDS!</string>
+    <string name="cancel_lower">Cancel</string>
+    <string name="image_default">image default</string>
+    <string name="back_button">back button</string>
 
 </resources>

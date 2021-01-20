@@ -57,7 +57,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 android:padding="5dp"
-                android:contentDescription="back button" />
+                android:contentDescription="@string/back_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

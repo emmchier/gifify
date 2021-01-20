@@ -4,14 +4,12 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-
 import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.databinding.FragmentGifFavouritesScreenBinding;
@@ -21,9 +19,11 @@ import com.example.gifify_challenge.utils.SpacingItemDecoration;
 import com.example.gifify_challenge.utils.Util;
 import com.example.gifify_challenge.viewmodels.ViewmodelGifFavouritesScreen;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.List;
 
+/*
+ * Favourites Gifs Screen
+ */
 public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifFavouritesScreen.FavouriteListener {
 
     private AdapterGifFavouritesScreen adapterGifFavouritesScreen;
@@ -62,10 +62,10 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
         viewmodelGifFavouritesScreen.getFavouritetList();
     }
 
+    // Observer Pattern
     private void observeViewmodelData() {
         viewmodelGifFavouritesScreen = ViewModelProviders.of(requireActivity()).get(ViewmodelGifFavouritesScreen.class);
 
-        // observe data from viewmodel
         final Observer<List<GifEntity>> observerFavouriteList = new Observer<List<GifEntity>>() {
             @Override
             public void onChanged(List<GifEntity> gifEntities) {
@@ -98,8 +98,8 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
     public void deleteFromList(GifEntity gif, int position) {
         DialogBase dialogBase = new DialogBase(
             gif,
-            "Delete from favourites?",
-            "DELETE",
+            getString(R.string.delete_favourites),
+            getString(R.string.delete_upper),
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -107,7 +107,7 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
                     adapterGifFavouritesScreen.removeFromList(position);
                     Util.setActionSnackBar(
                             getView(),
-                            "Removed from your favourites",
+                            getString(R.string.remove_from_favourites),
                             "",
                             Snackbar.LENGTH_LONG,
                             null);
@@ -119,7 +119,7 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
                 }
             }
         );
-        dialogBase.show(getChildFragmentManager(), "Dialog add delete favourite");
+        dialogBase.show(getChildFragmentManager(), getString(R.string.dialog_favourites));
     }
 
     @Override

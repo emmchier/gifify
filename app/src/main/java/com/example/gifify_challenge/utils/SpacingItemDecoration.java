@@ -4,6 +4,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+/*
+ * Grid margins for Recyclers
+ */
 public class SpacingItemDecoration extends RecyclerView.ItemDecoration {
 
     private int spanCount;

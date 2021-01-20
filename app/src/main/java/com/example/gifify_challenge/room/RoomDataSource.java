@@ -7,6 +7,9 @@ import com.example.gifify_challenge.core.service.ServiceResult;
 
 import java.util.List;
 
+/*
+ * Build Room database
+ */
 public class RoomDataSource {
 
     private RoomAppDatabase roomAppDatabase;

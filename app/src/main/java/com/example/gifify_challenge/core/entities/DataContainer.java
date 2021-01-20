@@ -1,7 +1,9 @@
 package com.example.gifify_challenge.core.entities;
 import java.util.List;
 
-
+/*
+ * Container class for a Gif list
+ */
 public class DataContainer {
 
     private List<GifEntity> data;
@@ -17,7 +19,4 @@ public class DataContainer {
         return data;
     }
 
-    public void setData(List<GifEntity> data) {
-        this.data = data;
-    }
 }

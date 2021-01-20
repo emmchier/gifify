@@ -1,15 +1,16 @@
 package com.example.gifify_challenge.core.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-
 import com.example.gifify_challenge.utils.ImgConverter;
 import com.google.gson.annotations.SerializedName;
 
+/*
+ * Gif main entity
+ */
 @Entity
 public class GifEntity implements Parcelable {
 
@@ -44,25 +45,13 @@ public class GifEntity implements Parcelable {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     @NonNull
     public GifImg getImages() {
         return images;
-    }
-
-    public void setImages(@NonNull GifImg images) {
-        this.images = images;
     }
 
     @Override

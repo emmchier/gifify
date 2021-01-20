@@ -2,20 +2,20 @@ package com.example.gifify_challenge.ui.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.bumptech.glide.Glide;
 import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.databinding.DialogBaseBinding;
 
+/*
+ * Customizable dialog fragment
+ */
 public class DialogBase extends DialogFragment {
 
     private String dialogDescription;
@@ -49,7 +49,7 @@ public class DialogBase extends DialogFragment {
         Glide.with(binding.getRoot())
                 .load(gifEntity.getImages().getDownsized().getUrl())
                 .placeholder(R.drawable.ic_gif)
-                .error(R.drawable.ic_baseline_videocam_24)
+                .error(R.drawable.ic_empty)
                 .into(binding.imageViewGifDialog);
         if (dialogDescription.equals("")) {
             binding.textViewDialogDescription.setVisibility(View.GONE);

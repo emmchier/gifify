@@ -1,6 +1,5 @@
 package com.example.gifify_challenge.viewmodels;
 import android.app.Application;
-import android.view.View;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,8 +8,9 @@ import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.core.repository.Repository;
 import com.example.gifify_challenge.core.service.ServiceResult;
 
-import java.util.List;
-
+/*
+ * Search Screen Viewmodel
+ */
 public class ViewmodelSearchGifScreen extends AndroidViewModel {
 
     private MutableLiveData<ServiceResult<DataContainer>> searchGifList;
@@ -34,5 +34,4 @@ public class ViewmodelSearchGifScreen extends AndroidViewModel {
     public LiveData<ServiceResult<DataContainer>> searchList() {
         return searchGifList;
     }
-
 }

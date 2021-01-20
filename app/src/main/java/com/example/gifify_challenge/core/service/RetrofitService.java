@@ -3,8 +3,9 @@ import com.example.gifify_challenge.utils.Const;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 /*
- * conexión con la API mediante Retrofit2
+ * Retrofit2 Singleton
  */
 public class RetrofitService {
 

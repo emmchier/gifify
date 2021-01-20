@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/*
+ * Adapter for favourites gifs
+ */
 public class AdapterGifFavouritesScreen extends RecyclerView.Adapter {
 
     private List<GifEntity> favouriteList;
@@ -81,14 +84,12 @@ public class AdapterGifFavouritesScreen extends RecyclerView.Adapter {
             });
         }
 
-
-
         @SuppressLint("CheckResult")
         public void setFavouriteCellData(GifEntity gif) {
             Glide.with(itemView)
                     .load(gif.getImages().getDownsized().getUrl())
                     .placeholder(R.drawable.ic_gif)
-                    .error(R.drawable.ic_baseline_videocam_24)
+                    .error(R.drawable.ic_gif)
                     .into(binding.imageViewGif);
         }
     }

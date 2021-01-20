@@ -4,28 +4,25 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.gifify_challenge.R;
-import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.databinding.CellGifBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Adapter for gif list
+ */
 public class AdapterGifListScreen extends RecyclerView.Adapter {
 
     private List<GifEntity> gifList;
-    private List<GifEntity> searchList;
     private GifListener gifListener;
 
     public AdapterGifListScreen(GifListener gifListener) {
         this.gifList = new ArrayList<>();
-        this.searchList = new ArrayList<>();
         this.gifListener = gifListener;
     }
 
@@ -85,7 +82,7 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
             Glide.with(itemView)
                     .load(gif.getImages().getDownsized().getUrl())
                     .placeholder(R.drawable.ic_gif)
-                    .error(R.drawable.ic_baseline_videocam_24)
+                    .error(R.drawable.ic_empty)
                     .into(binding.imageViewGif);
         }
     }

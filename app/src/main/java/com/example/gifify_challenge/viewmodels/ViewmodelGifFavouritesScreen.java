@@ -1,16 +1,15 @@
 package com.example.gifify_challenge.viewmodels;
 import android.app.Application;
-import android.view.View;
-
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.core.repository.Repository;
 import java.util.List;
 
+/*
+ * Favourite Screen Viewmodel
+ */
 public class ViewmodelGifFavouritesScreen extends AndroidViewModel {
 
     private MutableLiveData<List<GifEntity>> favouriteList;

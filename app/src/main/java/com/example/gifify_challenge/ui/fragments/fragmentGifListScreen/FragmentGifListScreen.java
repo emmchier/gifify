@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,7 +13,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
@@ -27,6 +25,9 @@ import com.example.gifify_challenge.utils.Util;
 import com.example.gifify_challenge.viewmodels.ViewmodelGifListScreen;
 import com.google.android.material.snackbar.Snackbar;
 
+/*
+ * Gif List Screen
+ */
 public class FragmentGifListScreen extends Fragment implements AdapterGifListScreen.GifListener {
 
     private AdapterGifListScreen adapterGifListScreen;
@@ -56,10 +57,10 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         return fragmentListView;
     }
 
+    // Observer Pattern
     private void observeViewmodelData() {
         viewmodelGifListScreen = ViewModelProviders.of(requireActivity()).get(ViewmodelGifListScreen.class);
 
-        // observe data from viewmodel
         final Observer<ServiceResult<DataContainer>> dataContainerObserver = new Observer<ServiceResult<DataContainer>>() {
             @Override
             public void onChanged(ServiceResult<DataContainer> dataContainer) {
@@ -75,7 +76,7 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
                     case ERROR:
                         binding.progressBar.overlay.setVisibility(View.VISIBLE);
                         binding.progressBar.progressBarWait.setVisibility(View.VISIBLE);
-                        Toast.makeText(getContext(), "Hubo un error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.unexpected_error), Toast.LENGTH_SHORT).show();
                         break;
                     case LOADING:
                         binding.progressBar.overlay.setVisibility(View.VISIBLE);
@@ -112,15 +113,15 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         DialogBase dialogBase = new DialogBase(
             gif,
             "",
-            "ADD TO FAVOURITES",
+            getString(R.string.add_favourites),
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     viewmodelGifListScreen.insertFavouriteGif(gif);
                     Util.setActionSnackBar(
                         getView(),
-                        "Added to favourites",
-                        "MORE",
+                        getString(R.string.added_favourites),
+                        getString(R.string.more_upper),
                         Snackbar.LENGTH_LONG,
                         new View.OnClickListener() {
                             @Override
@@ -133,7 +134,7 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
                 }
             }
         );
-        dialogBase.show(getChildFragmentManager(), "Dialog add to favourites");
+        dialogBase.show(getChildFragmentManager(), getString(R.string.dialog_favourites));
     }
 
     @Override
@@ -141,6 +142,7 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         Util.shareGif(gif, getContext(), getChildFragmentManager());
     }
 
+    // Pagination method
     private void setPagination() {
         binding.recyclerViewGifList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

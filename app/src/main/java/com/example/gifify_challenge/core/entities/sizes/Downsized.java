@@ -1,13 +1,14 @@
 package com.example.gifify_challenge.core.entities.sizes;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 import com.google.gson.annotations.SerializedName;
 
+/*
+ * URL format size for gifs
+ */
 @Entity
 public class Downsized implements Parcelable {
 
@@ -34,10 +35,6 @@ public class Downsized implements Parcelable {
         return url;
     }
 
-    public void setUrl(@NonNull String url) {
-        this.url = url;
-    }
-
     public String getWidth() {
         return width;
     }
@@ -52,14 +49,6 @@ public class Downsized implements Parcelable {
 
     public void setHeight(String height) {
         this.height = height;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.example.gifify_challenge.ui.fragments.fragmentSearchGifsScreen;
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -10,16 +8,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-
-import android.text.Html;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
@@ -32,6 +25,9 @@ import com.example.gifify_challenge.utils.Util;
 import com.example.gifify_challenge.viewmodels.ViewmodelSearchGifScreen;
 import com.google.android.material.snackbar.Snackbar;
 
+/*
+ * Search Gifs Screen
+ */
 public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGifScreen.SearchListener {
 
     private AdapterSearchGifScreen adapterSearchGifScreen;
@@ -61,10 +57,10 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
         return fragmentSearchView;
     }
 
+    // Observer Pattern
     private void observeViewmodelData() {
         viewmodelSearchGifScreen = ViewModelProviders.of(requireActivity()).get(ViewmodelSearchGifScreen.class);
 
-        // observe data from viewmodel
         final Observer<ServiceResult<DataContainer>> searchContainerObserver = new Observer<ServiceResult<DataContainer>>() {
             @Override
             public void onChanged(ServiceResult<DataContainer> dataContainer) {
@@ -85,7 +81,7 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
                     case ERROR:
                         binding.progressBarSearch.progressBarWait.setVisibility(View.VISIBLE);
                         binding.progressBarSearch.overlay.setVisibility(View.VISIBLE);
-                        Toast.makeText(getContext(), "An error has ocurred", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.unexpected_error), Toast.LENGTH_SHORT).show();
                         break;
                     case LOADING:
                         binding.progressBarSearch.progressBarWait.setVisibility(View.VISIBLE);
@@ -123,15 +119,15 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
         DialogBase dialogBase = new DialogBase(
                 gif,
                 "",
-                "ADD TO FAVOURITES",
+                getString(R.string.add_favourites),
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         viewmodelSearchGifScreen.insertFavouriteGif(gif);
                         Util.setActionSnackBar(
                                 getView(),
-                                "Added to favourites",
-                                "MORE",
+                                getString(R.string.added_favourites),
+                                getString(R.string.more_upper),
                                 Snackbar.LENGTH_LONG,
                                 new View.OnClickListener() {
                                     @Override
@@ -144,7 +140,7 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
                     }
                 }
         );
-        dialogBase.show(getChildFragmentManager(), "Dialog add to favourites");
+        dialogBase.show(getChildFragmentManager(), getString(R.string.dialog_favourites));
     }
 
     @Override
@@ -152,6 +148,7 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
         Util.shareGif(gif, getContext(), getChildFragmentManager());
     }
 
+    // set search bar
     @SuppressLint("ResourceAsColor")
     private void setSearchView() {
         binding.searchViewGifs.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

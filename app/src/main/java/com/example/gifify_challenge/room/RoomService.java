@@ -11,15 +11,21 @@ import com.example.gifify_challenge.core.service.ServiceResult;
 
 import java.util.List;
 
+/*
+ * Room calls
+ */
 @Dao
 public interface RoomService {
 
+    // get complete favourite list
     @Query("SELECT * FROM GifEntity")
     List<GifEntity> getAllFavouriteGifs();
 
+    // sav a new favourite gif
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertGifFavourite(GifEntity favouriteGif);
 
+    // delete gif from favourites
     @Query("DELETE FROM GifEntity WHERE id = :id")
     void deleteFavouriteGif(String id);
 

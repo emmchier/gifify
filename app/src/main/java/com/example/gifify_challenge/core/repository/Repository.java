@@ -1,10 +1,7 @@
 package com.example.gifify_challenge.core.repository;
 import android.app.Application;
-import android.provider.ContactsContract;
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
-
+import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.core.service.RetrofitService;
@@ -12,14 +9,14 @@ import com.example.gifify_challenge.core.service.Service;
 import com.example.gifify_challenge.core.service.ServiceResult;
 import com.example.gifify_challenge.utils.Const;
 import com.example.gifify_challenge.room.RoomDataSource;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/*
+ * Repository Pattern
+ */
 public class Repository {
 
     private RoomDataSource room;
@@ -33,32 +30,31 @@ public class Repository {
         this.searchResults = new MutableLiveData<>();
     }
 
-    // get data from Giphy API
+    // get a gif data list from Giphy API
     public MutableLiveData<ServiceResult<DataContainer>> getGifList(int paginationNumber) {
 
         results.postValue(new ServiceResult<>(ServiceResult.Status.LOADING, null, null));
 
         RetrofitService.getRetrofitInstance().create(Service.class)
-                .getRandomGifList(Const.GIPHY_API_KEY, 25, paginationNumber)
+                .getRandomGifList(Const.GIPHY_API_KEY, Const.GIF_LIMIT, paginationNumber)
                 .enqueue(new Callback<DataContainer>() {
             @Override
             public void onResponse(Call<DataContainer> call, Response<DataContainer> response) {
                 if (response.isSuccessful()) {
                     results.postValue(new ServiceResult<>(ServiceResult.Status.SUCCESS, response.body(), null));
-                    Log.d("retrofit", response.body().toString());
                 } else {
-                    results.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, "Ocurrió un error"));
-                    Log.d("retrofit", response.message());
+                    results.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, application.getString(R.string.unexpected_error)));
                 }
             }
             @Override
             public void onFailure(Call<DataContainer> call, Throwable t) {
-                results.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, "Ocurrió un error"));
+                results.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, application.getString(R.string.unexpected_error)));
             }
         });
         return results;
     }
 
+    // get Gifs by searching from Giphy API
     public MutableLiveData<ServiceResult<DataContainer>> searchGifs(String query) {
 
         searchResults.postValue(new ServiceResult<>(ServiceResult.Status.LOADING, null, null));
@@ -71,19 +67,19 @@ public class Repository {
                     if (response.isSuccessful()) {
                         searchResults.postValue(new ServiceResult<>(ServiceResult.Status.SUCCESS, response.body(), null));
                     } else {
-                        searchResults.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, "Ocurrió un error"));
-                        Log.d("retrofit", response.message());
+                        searchResults.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, application.getString(R.string.unexpected_error)));
                     }
                 }
                 @Override
                 public void onFailure(Call<DataContainer> call, Throwable t) {
-                    searchResults.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, "Ocurrió un error"));
+                    searchResults.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, application.getString(R.string.unexpected_error)));
                 }
             });
             return searchResults;
 
     }
 
+    // get a list of favourites Gifs from room database
     public List<GifEntity> getGifFavouriteList() {
         room = new RoomDataSource(application.getApplicationContext());
         return room.getAllFavouriteGifList();

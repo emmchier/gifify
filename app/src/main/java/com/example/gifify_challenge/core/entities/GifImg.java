@@ -1,12 +1,13 @@
 package com.example.gifify_challenge.core.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
-
 import com.example.gifify_challenge.core.entities.sizes.Downsized;
 import com.google.gson.annotations.SerializedName;
 
+/*
+ * Image format entity
+ */
 public class GifImg implements Parcelable {
 
     @SerializedName("downsized")
@@ -19,10 +20,6 @@ public class GifImg implements Parcelable {
     @NonNull
     public Downsized getDownsized() {
         return downsized;
-    }
-
-    public void setDownsized(Downsized downsized) {
-        this.downsized = downsized;
     }
 
     @Override
