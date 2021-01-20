@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
+import com.example.gifify_challenge.core.service.ServiceResult;
 
 import java.util.List;
 

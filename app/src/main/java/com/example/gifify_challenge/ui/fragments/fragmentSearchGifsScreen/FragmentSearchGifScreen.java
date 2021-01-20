@@ -1,4 +1,6 @@
 package com.example.gifify_challenge.ui.fragments.fragmentSearchGifsScreen;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -21,6 +23,8 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +33,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
+import com.example.gifify_challenge.core.service.ServiceResult;
 import com.example.gifify_challenge.databinding.FragmentSearchGifScreenBinding;
 import com.example.gifify_challenge.ui.adapters.AdapterGifListScreen;
 import com.example.gifify_challenge.ui.adapters.AdapterSearchGifScreen;
@@ -67,36 +72,37 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
         viewmodelSearchGifScreen = ViewModelProviders.of(requireActivity()).get(ViewmodelSearchGifScreen.class);
 
         // observe data from viewmodel
-        final Observer<DataContainer> searchContainerObserver = new Observer<DataContainer>() {
+        final Observer<ServiceResult<DataContainer>> searchContainerObserver = new Observer<ServiceResult<DataContainer>>() {
             @Override
-            public void onChanged(DataContainer dataContainer) {
-                if (dataContainer != null) {
-                    adapterSearchGifScreen.loadSearchGifs(dataContainer.getData());
+            public void onChanged(ServiceResult<DataContainer> dataContainer) {
+                switch(dataContainer.getStatus()) {
+                    case SUCCESS:
+                        if (dataContainer.getData().getData() != null) {
+                            binding.progressBarSearch.progressBarWait.setVisibility(View.GONE);
+                            binding.progressBarSearch.overlay.setVisibility(View.GONE);
+                            adapterSearchGifScreen.loadSearchGifs(dataContainer.getData().getData());
+
+                            if (adapterSearchGifScreen.getItemCount() == 0) {
+                                binding.imageViewDefaultSearch.linearDefaultSearchContainer.setVisibility(View.VISIBLE);
+                            } else {
+                                binding.imageViewDefaultSearch.linearDefaultSearchContainer.setVisibility(View.GONE);
+                            }
+                        }
+                        break;
+                    case ERROR:
+                        binding.progressBarSearch.progressBarWait.setVisibility(View.VISIBLE);
+                        binding.progressBarSearch.overlay.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "An error has ocurred", Toast.LENGTH_SHORT).show();
+                        break;
+                    case LOADING:
+                        binding.progressBarSearch.progressBarWait.setVisibility(View.VISIBLE);
+                        binding.progressBarSearch.overlay.setVisibility(View.VISIBLE);
+                        binding.imageViewDefaultSearch.linearDefaultSearchContainer.setVisibility(View.GONE);
+                        break;
                 }
             }
         };
         viewmodelSearchGifScreen.searchList().observe(requireActivity(), searchContainerObserver);
-
-        // observe progressBar state from viewmodel
-        final Observer<Integer> observerSearchDefaultImg = new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                binding.imageViewSearchDefault.setVisibility(integer);
-            }
-        };
-        viewmodelSearchGifScreen.searchDefaultImgShowing().observe(requireActivity(), observerSearchDefaultImg);
-
-        // observe errors from service
-        final Observer<Boolean> observerErrorFromService = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean error) {
-                if (error) {
-                    Toast.makeText(getContext(), getString(R.string.error_system), Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-        viewmodelSearchGifScreen.isErrorService().observe(requireActivity(), observerErrorFromService);
-
     }
 
     private void initRecyclerViewGifList() {
@@ -108,7 +114,6 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
     }
 
     private void initViews() {
-        binding.recyclerViewSearchList.setVisibility(View.GONE);
         binding.imargeViewBackFromSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +154,7 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        adapterSearchGifScreen.clearList();
                         NavHostFragment
                                 .findNavController(FragmentSearchGifScreen.this)
                                 .navigate(R.id.action_to_favourites);
@@ -160,44 +166,7 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
 
     @Override
     public void shareGif(GifEntity gif) {
-        DialogBase dialogBase = new DialogBase(
-                gif,
-                "",
-                "SHARE WITH FRIENDS!",
-                "See More",
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Glide.with(getContext())
-                                .asBitmap()
-                                .load(gif.getImages().getDownsized().getUrl())
-                                .into(new CustomTarget<Bitmap>() {
-                                    @Override
-                                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                        Uri uri = getImageUri(resource);
-                                        Intent shareIntent = new Intent();
-                                        shareIntent.setAction(Intent.ACTION_SEND);
-                                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                                        shareIntent.setType("image/gif");
-                                        startActivity(Intent.createChooser(shareIntent, "Share this GIF"));
-                                    }
-                                    @Override
-                                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                                    }
-                                });
-                    }
-                },
-                null
-        );
-        dialogBase.show(getChildFragmentManager(), "Share with friends");
-    }
-
-    public Uri getImageUri(Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
-                inImage, UUID.randomUUID().toString() + ".png", "drawing");
-        return Uri.parse(path);
+        Util.shareGif(gif, getContext(), getChildFragmentManager());
     }
 
     private void setSearchView() {

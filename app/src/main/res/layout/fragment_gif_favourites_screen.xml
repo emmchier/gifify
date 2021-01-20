@@ -9,15 +9,13 @@
     android:layout_weight="90"
     tools:context=".ui.fragments.fragmentGifFavouritesScreen.FragmentGifFavouritesScreen">
 
-   <!-- <ProgressBar
-        android:id="@+id/progressBarFavourites"
-        android:layout_width="@dimen/base_space_60"
-        android:layout_height="@dimen/base_space_60"
+    <include
+        android:id="@+id/imageViewDefaultFavourites"
+        layout="@layout/default_empty"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>-->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewDefault"
@@ -35,6 +33,14 @@
         android:id="@+id/recyclerViewGifFavourite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/progressBarFavs"
+        layout="@layout/progress_animation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -3,6 +3,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.example.gifify_challenge.core.entities.GifEntity;
+import com.example.gifify_challenge.core.service.ServiceResult;
 
 import java.util.List;
 

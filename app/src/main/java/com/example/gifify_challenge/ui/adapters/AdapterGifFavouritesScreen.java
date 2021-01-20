@@ -87,7 +87,7 @@ public class AdapterGifFavouritesScreen extends RecyclerView.Adapter {
         public void setFavouriteCellData(GifEntity gif) {
             Glide.with(itemView)
                     .load(gif.getImages().getDownsized().getUrl())
-                    .placeholder(R.drawable.ic_baseline_videocam_24)
+                    .placeholder(R.drawable.ic_gif)
                     .error(R.drawable.ic_baseline_videocam_24)
                     .into(binding.imageViewGif);
         }

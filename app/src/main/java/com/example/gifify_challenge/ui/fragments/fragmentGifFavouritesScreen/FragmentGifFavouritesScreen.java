@@ -42,6 +42,9 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
     private ViewmodelGifFavouritesScreen viewmodelGifFavouritesScreen;
     private FragmentGifFavouritesScreenBinding binding;
 
+    public FragmentGifFavouritesScreen() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentGifFavouritesScreenBinding.inflate(inflater, container, false);
@@ -72,8 +75,15 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
             public void onChanged(List<GifEntity> gifEntities) {
                 if (gifEntities != null) {
                     adapterGifFavouritesScreen.loadFavourites(gifEntities);
+                }
+                binding.imageViewDefaultFavourites.linearDefaultListContainer.setVisibility(View.GONE);
+                binding.progressBarFavs.progressBarWait.setVisibility(View.GONE);
+                binding.progressBarFavs.overlay.setVisibility(View.GONE);
+
+                if (adapterGifFavouritesScreen.getItemCount() == 0) {
+                    binding.imageViewDefaultFavourites.linearDefaultListContainer.setVisibility(View.VISIBLE);
                 } else {
-                    adapterGifFavouritesScreen.loadFavourites(new ArrayList<>());
+                    binding.imageViewDefaultFavourites.linearDefaultListContainer.setVisibility(View.GONE);
                 }
             }
         };
@@ -106,6 +116,7 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
                             "",
                             Snackbar.LENGTH_LONG,
                             null);
+                    binding.imageViewDefaultFavourites.linearDefaultListContainer.setVisibility(View.VISIBLE);
                 }
             },
             null
@@ -115,6 +126,6 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
 
     @Override
     public void shareGif(GifEntity gif) {
-        Toast.makeText(getContext(), "COMPARTIR", Toast.LENGTH_SHORT).show();
+        Util.shareGif(gif, getContext(), getChildFragmentManager());
     }
 }

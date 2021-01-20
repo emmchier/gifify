@@ -27,7 +27,6 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
         this.gifList = new ArrayList<>();
         this.searchList = new ArrayList<>();
         this.gifListener = gifListener;
-        searchList.addAll(gifList);
     }
 
     @NonNull
@@ -36,8 +35,7 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         CellGifBinding gifCell = CellGifBinding.bind(inflater.inflate(R.layout.cell_gif, parent, false));
-        GifListViewholder viewholder = new GifListViewholder(gifCell);
-
+        GifListViewholder  viewholder = new GifListViewholder(gifCell);
         return viewholder;
     }
 
@@ -86,7 +84,7 @@ public class AdapterGifListScreen extends RecyclerView.Adapter {
         public void setCellData(GifEntity gif) {
             Glide.with(itemView)
                     .load(gif.getImages().getDownsized().getUrl())
-                    .placeholder(R.drawable.ic_baseline_videocam_24)
+                    .placeholder(R.drawable.ic_gif)
                     .error(R.drawable.ic_baseline_videocam_24)
                     .into(binding.imageViewGif);
         }

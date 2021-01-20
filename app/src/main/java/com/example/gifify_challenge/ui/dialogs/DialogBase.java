@@ -52,7 +52,7 @@ public class DialogBase extends DialogFragment {
     private void setDialogView() {
         Glide.with(binding.getRoot())
                 .load(gifEntity.getImages().getDownsized().getUrl())
-                .placeholder(R.drawable.ic_baseline_videocam_24)
+                .placeholder(R.drawable.ic_gif)
                 .error(R.drawable.ic_baseline_videocam_24)
                 .into(binding.imageViewGifDialog);
         if (dialogDescription.equals("")) {

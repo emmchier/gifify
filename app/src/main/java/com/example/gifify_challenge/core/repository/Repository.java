@@ -1,5 +1,6 @@
 package com.example.gifify_challenge.core.repository;
 import android.app.Application;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -8,6 +9,7 @@ import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.core.service.RetrofitService;
 import com.example.gifify_challenge.core.service.Service;
+import com.example.gifify_challenge.core.service.ServiceResult;
 import com.example.gifify_challenge.utils.Const;
 import com.example.gifify_challenge.room.RoomDataSource;
 
@@ -22,22 +24,19 @@ public class Repository {
 
     private RoomDataSource room;
     private Application application;
-    private MutableLiveData<List<GifEntity>> favourites;
-
-    private final MutableLiveData<DataContainer> results;
-    private final MutableLiveData<DataContainer> searchResults;
+    private final MutableLiveData<ServiceResult<DataContainer>> results;
+    private final MutableLiveData<ServiceResult<DataContainer>> searchResults;
 
     public Repository(Application application) {
         this.application = application;
-        this.favourites = new MutableLiveData<>();
         this.results = new MutableLiveData<>();
         this.searchResults = new MutableLiveData<>();
     }
 
     // get data from Giphy API
-    public MutableLiveData<DataContainer> getGifList(int paginationNumber) {
+    public MutableLiveData<ServiceResult<DataContainer>> getGifList(int paginationNumber) {
 
-        results.postValue(new DataContainer(new ArrayList<>()));
+        results.postValue(new ServiceResult<>(ServiceResult.Status.LOADING, null, null));
 
         RetrofitService.getRetrofitInstance().create(Service.class)
                 .getRandomGifList(Const.GIPHY_API_KEY, 25, paginationNumber)
@@ -45,24 +44,24 @@ public class Repository {
             @Override
             public void onResponse(Call<DataContainer> call, Response<DataContainer> response) {
                 if (response.isSuccessful()) {
-                    results.postValue(response.body());
+                    results.postValue(new ServiceResult<>(ServiceResult.Status.SUCCESS, response.body(), null));
                     Log.d("retrofit", response.body().toString());
                 } else {
-                    results.postValue(null);
+                    results.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, "Ocurrió un error"));
                     Log.d("retrofit", response.message());
                 }
             }
             @Override
             public void onFailure(Call<DataContainer> call, Throwable t) {
-                Log.d("retrofit", call.request().url().toString());
+                results.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, "Ocurrió un error"));
             }
         });
         return results;
     }
 
-    public MutableLiveData<DataContainer> searchGifs(String query) {
+    public MutableLiveData<ServiceResult<DataContainer>> searchGifs(String query) {
 
-        searchResults.postValue(new DataContainer(new ArrayList<>()));
+        searchResults.postValue(new ServiceResult<>(ServiceResult.Status.LOADING, null, null));
 
         RetrofitService.getRetrofitInstance().create(Service.class)
             .searchGifs(Const.GIPHY_API_KEY, query)
@@ -70,18 +69,19 @@ public class Repository {
                 @Override
                 public void onResponse(Call<DataContainer> call, Response<DataContainer> response) {
                     if (response.isSuccessful()) {
-                        searchResults.postValue(response.body());
+                        searchResults.postValue(new ServiceResult<>(ServiceResult.Status.SUCCESS, response.body(), null));
                     } else {
-                        searchResults.postValue(null);
+                        searchResults.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, "Ocurrió un error"));
                         Log.d("retrofit", response.message());
                     }
                 }
                 @Override
                 public void onFailure(Call<DataContainer> call, Throwable t) {
-                    Log.d("retrofit", call.request().url().toString());
+                    searchResults.postValue(new ServiceResult<>(ServiceResult.Status.ERROR, null, "Ocurrió un error"));
                 }
             });
             return searchResults;
+
     }
 
     public List<GifEntity> getGifFavouriteList() {

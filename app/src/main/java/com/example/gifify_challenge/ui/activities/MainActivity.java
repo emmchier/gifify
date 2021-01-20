@@ -8,11 +8,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.gifify_challenge.R;
 
@@ -20,11 +25,15 @@ import static com.example.gifify_challenge.utils.Const.REQUEST_STORAGE_PERMISSIO
 
 public class MainActivity extends AppCompatActivity {
 
+    private AppBarConfiguration appBarConfiguration;
+    private NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
+        setNavigation();
 
         if (checkStoragePermission()) {
         } else {
@@ -32,10 +41,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setNavigation() {
+        appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.fragmentGifListScreen,
+                R.id.fragmentSearchGifScreen,
+                R.id.fragmentGifFavouritesScreen)
+                .build();
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller,
+                                             @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                if (destination.getId() == R.id.fragmentGifListScreen || destination.getId() == R.id.fragmentSearchGifScreen) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    getSupportActionBar().setHomeButtonEnabled(false);
+                } else {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    getSupportActionBar().setHomeButtonEnabled(false);
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.main_activity_label);
+        //getSupportActionBar().setTitle(R.string.main_activity_label);
     }
 
     private boolean checkStoragePermission() {

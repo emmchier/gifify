@@ -8,22 +8,13 @@
     android:background="@color/tagLightColor"
     tools:context=".ui.fragments.fragmentSearchGifsScreen.FragmentSearchGifScreen">
 
-    <ImageView
-        android:id="@+id/imageViewSearchDefault"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_baseline_search_24"
-        app:tint="@color/disableTintColor" />
-
-  <!--  <ProgressBar
-        android:id="@+id/searchProgressBar"
-        android:layout_width="@dimen/base_space_60"
-        android:layout_height="@dimen/base_space_60"
+    <include
+        android:id="@+id/imageViewDefaultSearch"
+        layout="@layout/default_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>-->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:focusableInTouchMode="false">
+        android:focusableInTouchMode="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -49,7 +40,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:queryHint="Search your gifs here..."
+                app:queryHint="@string/search"
                 tools:ignore="UnusedAttribute" />
 
             <ImageView
@@ -78,6 +69,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/progressBarSearch"
+        layout="@layout/progress_animation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -40,6 +40,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
+import com.example.gifify_challenge.core.service.ServiceResult;
 import com.example.gifify_challenge.databinding.FragmentGifListScreenBinding;
 import com.example.gifify_challenge.ui.activities.MainActivity;
 import com.example.gifify_challenge.ui.adapters.AdapterGifListScreen;
@@ -59,6 +60,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
+
+import static android.view.View.GONE;
 
 public class FragmentGifListScreen extends Fragment implements AdapterGifListScreen.GifListener {
 
@@ -95,36 +98,32 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
         viewmodelGifListScreen = ViewModelProviders.of(requireActivity()).get(ViewmodelGifListScreen.class);
 
         // observe data from viewmodel
-        final Observer<DataContainer> dataContainerObserver = new Observer<DataContainer>() {
+        final Observer<ServiceResult<DataContainer>> dataContainerObserver = new Observer<ServiceResult<DataContainer>>() {
             @Override
-            public void onChanged(DataContainer dataContainer) {
-                if (dataContainer != null) {
-                    adapterGifListScreen.loadGifs(dataContainer.getData());
+            public void onChanged(ServiceResult<DataContainer> dataContainer) {
+                switch(dataContainer.getStatus()) {
+                    case SUCCESS:
+                        if (dataContainer.getData().getData() != null) {
+                            binding.progressBar.overlay.setVisibility(View.GONE);
+                            binding.progressBar.progressBarWait.setVisibility(View.GONE);
+                            adapterGifListScreen.loadGifs(dataContainer.getData().getData());
+                            binding.imageViewDefaultList.linearDefaultListContainer.setVisibility(View.GONE);
+                        }
+                        break;
+                    case ERROR:
+                        binding.progressBar.overlay.setVisibility(View.VISIBLE);
+                        binding.progressBar.progressBarWait.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "Hubo un error", Toast.LENGTH_SHORT).show();
+                        break;
+                    case LOADING:
+                        binding.progressBar.overlay.setVisibility(View.VISIBLE);
+                        binding.progressBar.progressBarWait.setVisibility(View.VISIBLE);
+                        binding.imageViewDefaultList.linearDefaultListContainer.setVisibility(View.GONE);
+                        break;
                 }
             }
         };
         viewmodelGifListScreen.gifList().observe(requireActivity(), dataContainerObserver);
-
-        // observe progressBar state from viewmodel
-        final Observer<Integer> observerProgressBar = new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                binding.progressBar.setVisibility(integer);
-            }
-        };
-        viewmodelGifListScreen.progressBarShowing().observe(requireActivity(), observerProgressBar);
-
-        // observe errors from service
-        final Observer<Boolean> observerErrorFromService = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean error) {
-                if (error) {
-                    Toast.makeText(getContext(), getString(R.string.error_system), Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-        viewmodelGifListScreen.isErrorService().observe(requireActivity(), observerErrorFromService);
-
     }
 
     private void initRecyclerViewGifList() {
@@ -136,7 +135,6 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
     }
 
     private void initViews() {
-        binding.progressBar.setVisibility(View.VISIBLE);
         binding.linearToSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,44 +185,7 @@ public class FragmentGifListScreen extends Fragment implements AdapterGifListScr
 
     @Override
     public void shareGif(GifEntity gif) {
-        DialogBase dialogBase = new DialogBase(
-            gif,
-            "",
-            "SHARE WITH FRIENDS!",
-            "See More",
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Glide.with(getContext())
-                        .asBitmap()
-                        .load(gif.getImages().getDownsized().getUrl())
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                Uri uri = getImageUri(resource);
-                                Intent shareIntent = new Intent();
-                                shareIntent.setAction(Intent.ACTION_SEND);
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                                shareIntent.setType("image/gif");
-                                startActivity(Intent.createChooser(shareIntent, "Share this GIF"));
-                            }
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                            }
-                        });
-                }
-            },
-            null
-        );
-        dialogBase.show(getChildFragmentManager(), "Share with friends");
-    }
-
-    public Uri getImageUri(Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
-                inImage, UUID.randomUUID().toString() + ".png", "drawing");
-        return Uri.parse(path);
+        Util.shareGif(gif, getContext(), getChildFragmentManager());
     }
 
     private void setPagination() {
