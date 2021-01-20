@@ -1,14 +1,8 @@
 package com.example.gifify_challenge.ui.fragments.fragmentSearchGifsScreen;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.inputmethodservice.Keyboard;
-import android.net.Uri;
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -16,45 +10,44 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.MediaStore;
+import android.text.Html;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.gifify_challenge.R;
 import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.core.service.ServiceResult;
 import com.example.gifify_challenge.databinding.FragmentSearchGifScreenBinding;
-import com.example.gifify_challenge.ui.adapters.AdapterGifListScreen;
 import com.example.gifify_challenge.ui.adapters.AdapterSearchGifScreen;
 import com.example.gifify_challenge.ui.dialogs.DialogBase;
-import com.example.gifify_challenge.ui.fragments.fragmentGifFavouritesScreen.FragmentGifFavouritesScreen;
-import com.example.gifify_challenge.ui.fragments.fragmentGifListScreen.FragmentGifListScreen;
 import com.example.gifify_challenge.utils.SpacingItemDecoration;
-import com.example.gifify_challenge.utils.Tools;
 import com.example.gifify_challenge.utils.Util;
 import com.example.gifify_challenge.viewmodels.ViewmodelSearchGifScreen;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.UUID;
 
 public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGifScreen.SearchListener {
 
     private AdapterSearchGifScreen adapterSearchGifScreen;
     private ViewmodelSearchGifScreen viewmodelSearchGifScreen;
     private FragmentSearchGifScreenBinding binding;
+
+    public FragmentSearchGifScreen() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
+        setEnterTransition(inflater.inflateTransition(R.transition.fade));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,7 +102,7 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
         adapterSearchGifScreen = new AdapterSearchGifScreen(this);
         binding.recyclerViewSearchList.setAdapter(adapterSearchGifScreen);
         binding.recyclerViewSearchList.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        binding.recyclerViewSearchList.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(getContext(), 3), true));
+        binding.recyclerViewSearchList.addItemDecoration(new SpacingItemDecoration(2, Util.dpToPx(getContext(), 3), true));
         binding.recyclerViewSearchList.setHasFixedSize(true);
     }
 
@@ -131,7 +124,6 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
                 gif,
                 "",
                 "ADD TO FAVOURITES",
-                "See More",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -150,15 +142,6 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
                                     }
                                 });
                     }
-                },
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        adapterSearchGifScreen.clearList();
-                        NavHostFragment
-                                .findNavController(FragmentSearchGifScreen.this)
-                                .navigate(R.id.action_to_favourites);
-                    }
                 }
         );
         dialogBase.show(getChildFragmentManager(), "Dialog add to favourites");
@@ -169,6 +152,7 @@ public class FragmentSearchGifScreen extends Fragment implements AdapterSearchGi
         Util.shareGif(gif, getContext(), getChildFragmentManager());
     }
 
+    @SuppressLint("ResourceAsColor")
     private void setSearchView() {
         binding.searchViewGifs.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

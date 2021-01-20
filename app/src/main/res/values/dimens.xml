@@ -9,6 +9,7 @@
     <dimen name="base_space_30">30sp</dimen>
     <dimen name="base_space_40">40sp</dimen>
     <dimen name="base_space_60">60sp</dimen>
+    <dimen name="base_space_80">80sp</dimen>
     <dimen name="base_long_space">25sp</dimen>
     <dimen name="base_small_space">10sp</dimen>
     <dimen name="base_mini_space">5sp</dimen>

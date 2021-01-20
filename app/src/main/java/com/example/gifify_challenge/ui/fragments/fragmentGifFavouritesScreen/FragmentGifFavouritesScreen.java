@@ -1,39 +1,27 @@
 package com.example.gifify_challenge.ui.fragments.fragmentGifFavouritesScreen;
 import android.os.Bundle;
-import android.os.Handler;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gifify_challenge.R;
-import com.example.gifify_challenge.core.entities.DataContainer;
 import com.example.gifify_challenge.core.entities.GifEntity;
 import com.example.gifify_challenge.databinding.FragmentGifFavouritesScreenBinding;
-import com.example.gifify_challenge.databinding.FragmentGifListScreenBinding;
 import com.example.gifify_challenge.ui.adapters.AdapterGifFavouritesScreen;
-import com.example.gifify_challenge.ui.adapters.AdapterGifListScreen;
 import com.example.gifify_challenge.ui.dialogs.DialogBase;
-import com.example.gifify_challenge.ui.fragments.fragmentGifListScreen.FragmentGifListScreen;
 import com.example.gifify_challenge.utils.SpacingItemDecoration;
-import com.example.gifify_challenge.utils.Tools;
 import com.example.gifify_challenge.utils.Util;
 import com.example.gifify_challenge.viewmodels.ViewmodelGifFavouritesScreen;
-import com.example.gifify_challenge.viewmodels.ViewmodelGifListScreen;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifFavouritesScreen.FavouriteListener {
@@ -43,6 +31,14 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
     private FragmentGifFavouritesScreenBinding binding;
 
     public FragmentGifFavouritesScreen() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setExitTransition(inflater.inflateTransition(R.transition.slide_left));
+        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));
     }
 
     @Override
@@ -94,7 +90,7 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
         adapterGifFavouritesScreen = new AdapterGifFavouritesScreen(this);
         binding.recyclerViewGifFavourite.setAdapter(adapterGifFavouritesScreen);
         binding.recyclerViewGifFavourite.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        binding.recyclerViewGifFavourite.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(getContext(), 3), true));
+        binding.recyclerViewGifFavourite.addItemDecoration(new SpacingItemDecoration(2, Util.dpToPx(getContext(), 3), true));
         binding.recyclerViewGifFavourite.setHasFixedSize(true);
     }
 
@@ -104,7 +100,6 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
             gif,
             "Delete from favourites?",
             "DELETE",
-            "",
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -116,10 +111,13 @@ public class FragmentGifFavouritesScreen extends Fragment implements AdapterGifF
                             "",
                             Snackbar.LENGTH_LONG,
                             null);
-                    binding.imageViewDefaultFavourites.linearDefaultListContainer.setVisibility(View.VISIBLE);
+                    if (adapterGifFavouritesScreen.getItemCount() == 0) {
+                        binding.imageViewDefaultFavourites.linearDefaultListContainer.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.imageViewDefaultFavourites.linearDefaultListContainer.setVisibility(View.GONE);
+                    }
                 }
-            },
-            null
+            }
         );
         dialogBase.show(getChildFragmentManager(), "Dialog add delete favourite");
     }

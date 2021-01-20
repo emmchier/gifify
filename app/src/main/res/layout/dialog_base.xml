@@ -6,15 +6,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primaryTextColor"
-        android:padding="@dimen/base_space">
+        android:background="@color/primaryColor"
+        android:padding="@dimen/base_space_20">
 
         <ImageView
             android:id="@+id/imageViewGifDialog"
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_gif_height"
             android:contentDescription="@string/gif_image"
-            android:src="@drawable/ic_baseline_videocam_24"
+            android:src="@drawable/ic_gif"
+            android:layout_marginTop="@dimen/base_space"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +26,10 @@
             android:id="@+id/textViewDialogDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/base_space"
-            android:text="Delete from favourites?"
+            android:layout_marginTop="@dimen/base_space_40"
+            android:text="@string/delete_from_favourites"
             android:textColor="@color/white"
-            android:textSize="20dp"
+            android:textSize="@dimen/primary_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageViewGifDialog" />
@@ -39,14 +40,12 @@
             android:layout_height="45dp"
             android:padding="@dimen/base_small_space"
             android:text="DELETE"
-            android:layout_marginStart="@dimen/base_space_40"
-            android:layout_marginEnd="@dimen/base_space_40"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="16dp"
+            android:textSize="@dimen/secondary_text"
+            android:layout_marginTop="@dimen/base_space_40"
             android:background="@drawable/rounded_corners"
-            android:backgroundTint="@color/secondaryTextColor"
-            android:layout_marginTop="@dimen/base_space"
+            android:backgroundTint="@color/successColor"
             android:layout_marginBottom="@dimen/base_space"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,28 +64,15 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewBtnActionMain">
 
             <TextView
-                android:id="@+id/textViewBtnSeeMore"
-                android:layout_width="wrap_content"
-                android:layout_height="?android:attr/actionBarSize"
-                android:padding="@dimen/base_small_space"
-                android:text="See More"
-                android:layout_gravity="start"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:layout_weight="50" />
-
-            <TextView
                 android:id="@+id/textViewBtnCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="?android:attr/actionBarSize"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:padding="@dimen/base_small_space"
                 android:text="Cancel"
-                android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textColor="@color/successColor"
+                android:textSize="@dimen/secondary_text"
+                android:background="@drawable/linear_btn"
                 android:layout_gravity="end"
-                android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:layout_weight="50" />
 

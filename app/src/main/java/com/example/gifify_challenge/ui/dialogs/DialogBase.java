@@ -20,21 +20,17 @@ public class DialogBase extends DialogFragment {
 
     private String dialogDescription;
     private String mainActionBtnTitle;
-    private String btnGoToFavourites;
     private View.OnClickListener mainActionListener;
-    private View.OnClickListener directionListener;
 
     private DialogBaseBinding binding;
 
     private GifEntity gifEntity;
 
-    public DialogBase(GifEntity gifEntity, String dialogDescription, String mainActionBtnTitle, String btnGoToFavourites,
-                      View.OnClickListener mainActionListener, View.OnClickListener directionListener) {
+    public DialogBase(GifEntity gifEntity, String dialogDescription, String mainActionBtnTitle,
+                      View.OnClickListener mainActionListener) {
         this.dialogDescription = dialogDescription;
         this.mainActionBtnTitle = mainActionBtnTitle;
-        this.btnGoToFavourites = btnGoToFavourites;
         this.mainActionListener = mainActionListener;
-        this.directionListener = directionListener;
         this.gifEntity = gifEntity;
     }
 
@@ -62,7 +58,6 @@ public class DialogBase extends DialogFragment {
             binding.textViewDialogDescription.setText(dialogDescription);
         }
         setActionBtn(mainActionBtnTitle, binding.textViewBtnActionMain, mainActionListener);
-        setActionBtn(btnGoToFavourites, binding.textViewBtnSeeMore, directionListener);
         binding.textViewBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

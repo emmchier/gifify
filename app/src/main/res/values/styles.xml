@@ -1,9 +1,9 @@
 <resources>
     <!-- Gifify App - Wollox Challenge -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/successColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,5 +13,12 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="SearchViewTheme" parent="Widget.AppCompat.Light.SearchView">
+        <item name="android:textColorHint">@color/primaryTextColor</item>
+        <item name="android:editTextColor">@color/primaryTextColor</item>
+        <item name="android:tint">@color/primaryTextColor</item>
+    </style>
+
 
 </resources>

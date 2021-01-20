@@ -19,5 +19,7 @@
     <string name="search_icon">search icon</string>
     <string name="search_your_gifs_here">Search your gifs here...</string>
     <string name="search">Search...</string>
+    <string name="fav">fav</string>
+    <string name="delete_from_favourites">Delete from favourites?</string>
 
 </resources>

@@ -2,10 +2,12 @@ package com.example.gifify_challenge.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -44,7 +46,6 @@ public class Util {
                 gif,
                 "",
                 "SHARE WITH FRIENDS!",
-                "",
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -66,8 +67,7 @@ public class Util {
                                     }
                                 });
                     }
-                },
-                null
+                }
         );
         dialogBase.show(fm, "Share with friends");
     }
@@ -78,5 +78,10 @@ public class Util {
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(),
                 inImage, UUID.randomUUID().toString() + ".png", "drawing");
         return Uri.parse(path);
+    }
+
+    public static int dpToPx(Context c, int dp) {
+        Resources r = c.getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }

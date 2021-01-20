@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tagLightColor"
+    android:background="@color/tagDarkColor"
     android:layout_weight="90"
     tools:context=".ui.fragments.fragmentGifListScreen.FragmentGifListScreen"
     tools:ignore="MissingConstraints">
@@ -34,7 +34,7 @@
             android:id="@+id/linearToSearch"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/tagLightColor">
+            android:background="@color/tagDarkColor">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -82,18 +82,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_second"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/favoritos"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        app:layout_constraintVertical_bias="1" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

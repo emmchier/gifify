@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/base_space_40"
     android:id="@+id/linearDefaultListContainer"
-    android:background="@color/tagLightColor">
+    android:background="@color/tagDarkColor">
 
     <LinearLayout
         android:layout_width="wrap_content"
